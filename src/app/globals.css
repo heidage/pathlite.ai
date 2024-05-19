@@ -16,14 +16,34 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+main{
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: calc(50% - 10px); /* Subtract double the border width */
+  height: calc(80vh - 10px); /* Subtract double the border width */
+  max-width: 900px;
+  margin: auto;
+  border-radius: 10px;
+  background-color: black;
+}
+
+@keyframes border-lag {
+  0% { box-shadow: 3px 0 0 0 #04e762; }
+  25% { box-shadow: 0 3px 0 0 #04e762}
+  50% { box-shadow: 0 0 3px 0 #04e762}
+  75% { box-shadow: 0 0 0 3px #04e762}
+  100% { box-shadow: 3px 0 0 0 #04e762; }
+}
+
+.border-animation {
+  animation: border-lag 3s linear infinite;
 }
 
 @layer utilities {
