@@ -7,11 +7,11 @@ export default function ChatUI() {
       <div className="flex items-center justify-center h-full">
         <div className="container">
           <main>
-            <div className="flex-grow">
+            <div className="flex flex-col">
               {/* Other components or content can go here */}
               <ChatHistory />
+              <ChatInput />
             </div>
-            <ChatInput />
           </main>
         </div>
       </div>

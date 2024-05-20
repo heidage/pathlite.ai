@@ -1,9 +1,22 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import React from "react";
 
-export default function UserTemplate(){
+type Props = {
+    message: string;
+    isUser: boolean;
+}
+
+export default function UserTemplate({message, isUser}: Props){
     return (
-        <div>
-            <h1 className="text-white">User Template</h1>
+        <div className="border-b border-gray-600 w-11/12 mx-auto">
+            <div>
+                <FontAwesomeIcon icon={faUser} className="text-white" />
+            </div>
+            <div>
+                {/** User message */}
+                {/** Bot message */}
+            </div>
         </div>
     );
 }
