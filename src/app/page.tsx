@@ -1,5 +1,5 @@
+import ChatHistory from "@/components/ChatHistory";
 import ChatInput from "@/components/ChatInput";
-import Head from "next/head";
 
 export default function ChatUI() {
   return (
@@ -9,6 +9,7 @@ export default function ChatUI() {
           <main>
             <div className="flex-grow">
               {/* Other components or content can go here */}
+              <ChatHistory />
             </div>
             <ChatInput />
           </main>
