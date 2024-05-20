@@ -32,10 +32,11 @@ main {
   margin: auto;
   border-radius: 10px;
   background-color: black;
+  box-shadow: 0 5px 5px 0 black;
   position: relative;
 }
 
-main::before {
+/* main::before {
   content: "";
   position: absolute;
   top: 0;
@@ -52,7 +53,7 @@ main::before {
   50% { box-shadow: 0 0 3px 0 #04e762; }
   75% { box-shadow: 0 0 0 3px #04e762; }
   100% { box-shadow: 3px 0 0 0 #04e762; }
-}
+} */
 
 .chat-input-container {
   grid-row: 2; /* Position the chat input at the bottom row */
