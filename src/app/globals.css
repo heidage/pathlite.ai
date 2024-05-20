@@ -25,13 +25,25 @@
 
 main{
   display: grid;
+  position: relative;
   grid-template-rows: auto 1fr;
-  width: calc(50% - 10px); /* Subtract double the border width */
+  width: calc(60% - 10px); /* Subtract double the border width */
   height: calc(80vh - 10px); /* Subtract double the border width */
   max-width: 900px;
   margin: auto;
   border-radius: 10px;
   background-color: black;
+}
+
+main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  animation: border-lag 3s linear infinite;
 }
 
 @keyframes border-lag {
@@ -40,10 +52,6 @@ main{
   50% { box-shadow: 0 0 3px 0 #04e762}
   75% { box-shadow: 0 0 0 3px #04e762}
   100% { box-shadow: 3px 0 0 0 #04e762; }
-}
-
-.border-animation {
-  animation: border-lag 3s linear infinite;
 }
 
 @layer utilities {
