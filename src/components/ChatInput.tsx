@@ -25,7 +25,7 @@ export default function ChatInput() {
                 <input 
                 type="text" 
                 placeholder="Ask pathlite.ai anything related to your document"
-                className="flex-grow h-10 pl-3 pr-10 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
+                className="flex-grow h-14 pl-3 pr-10 rounded-2xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleEnterDown}

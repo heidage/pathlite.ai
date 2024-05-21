@@ -7,7 +7,7 @@ type Props = {
     isUser: boolean;
 }
 
-export default function UserTemplate({message, isUser}: Props){
+export default function ChatTemplate({message, isUser}: Props){
     return (
         <div className="border-b border-gray-600 w-11/12 mx-auto">
             <div>
