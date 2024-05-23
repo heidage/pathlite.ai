@@ -10,7 +10,7 @@ import { faQ } from "@fortawesome/free-solid-svg-icons";
 export default function ChatHistory(){
     const array_numbers = ["1", "2", "3", "4", "5"];
 
-    const [history, hasHistory] = useState(array_numbers);
+    const [history, hasHistory] = useState([]);
     return (
         <div className="overflow-y-auto flex-grow h-0">
             {history.length > 0 ? (
