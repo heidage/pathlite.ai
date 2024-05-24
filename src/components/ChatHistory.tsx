@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import Conversation from "./Conversation";
 import DefaultCards from "./DefaultCards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,7 @@ type Message = {
 };
 
 export default function ChatHistory() {
-    const messages = [
+    const messages = useMemo(() => [
         {
             message: "Hi, how can I help you?",
             isUser: false,
@@ -33,9 +33,13 @@ export default function ChatHistory() {
                 { name: "Documentation", link: "https://docs.mendable.ai" }
             ]
         }
-    ];
+    ], []);
 
-    const [history, hasHistory] = useState<Message[]>(messages);
+    useEffect(() => {
+        hasHistory(messages)
+    }, [messages])
+
+    const [history, hasHistory] = useState<Message[]>([]);
     return (
         <div className="overflow-y-auto flex-grow h-0">
             {history.length > 0 ? (
