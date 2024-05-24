@@ -14,9 +14,28 @@ type Message = {
 };
 
 export default function ChatHistory() {
-    const array_numbers = ["1", "2", "3", "4", "5"];
+    const messages = [
+        {
+            message: "Hi, how can I help you?",
+            isUser: false,
+            sources: []
+        },
+        {
+            message: "What is Mendable?",
+            isUser: true,
+            sources: []
+        },
+        {
+            message: "With Mendable, you can build a LLM chatbot that understands your technical resources, like documentation, product manuals, and more. Then you can deploy it anywhere that your customers or employees need.\n\nTo get started, simply connect your data and watch the chatbot learn.",
+            isUser: false,
+            sources: [
+                { name: "Website", link: "https://mendable.ai" },
+                { name: "Documentation", link: "https://docs.mendable.ai" }
+            ]
+        }
+    ];
 
-    const [history, hasHistory] = useState<Message[]>([]);
+    const [history, hasHistory] = useState<Message[]>(messages);
     return (
         <div className="overflow-y-auto flex-grow h-0">
             {history.length > 0 ? (
