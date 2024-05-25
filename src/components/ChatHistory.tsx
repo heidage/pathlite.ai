@@ -35,9 +35,9 @@ export default function ChatHistory() {
         }
     ], []);
 
-    useEffect(() => {
-        hasHistory(messages)
-    }, [messages])
+    // useEffect(() => {
+    //     hasHistory(messages)
+    // }, [messages])
 
     const [history, hasHistory] = useState<Message[]>([]);
     return (
@@ -45,7 +45,10 @@ export default function ChatHistory() {
             {history.length > 0 ? (
                 <Conversation messages={history} />
             ) : (
-                <div className="flex items-center justify-center h-full">
+                <div className="flex flex-col items-center justify-center h-full">
+                    <div className="mb-6 text-center">
+                        <h1 className="text-3xl font-bold text-lime-400">Welcome to Pathlite.ai</h1>
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
                         <DefaultCards
                         title="How do I load wallet?"
