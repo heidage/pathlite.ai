@@ -1,7 +1,7 @@
 from git import Repo
 import glob
 import os
-from splitters import (js_splitter, ts_splitter, md_splitter)
+from splitters import (js_splitter, ts_splitter, md_splitter,txt_splitter)
 from langchain_community.document_loaders.generic import GenericLoader
 from langchain_community.document_loaders.parsers import LanguageParser
 from langchain_community.document_loaders.parsers.txt import TextParser
@@ -42,6 +42,8 @@ def process_documents():
             texts.extend(ts_splitter.split_documents([doc]))
         elif doc.metadata['source'][-2:] == "md":
             texts.extend(md_splitter.split_documents([doc]))
+        elif doc.metadata['source'][-2:] == "txt":
+            texts.extend(txt_splitter.create_documents([doc]))
     return texts
 
 #load vectorstore

@@ -10,3 +10,6 @@ ts_splitter = RecursiveCharacterTextSplitter.from_language(
 md_splitter = RecursiveCharacterTextSplitter.from_language(
     language = Language.MARKDOWN, chunk_size=1000, chunk_overlap=200
 )
+txt_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000, chunk_overlap=200
+)
