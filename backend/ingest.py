@@ -61,6 +61,3 @@ def loading_vectorstore():
         db = Chroma.from_documents(texts, embedding,persist_directory=persist_directory)
         print("vectorstore created")
     return db
-
-if __name__ == "__main__":
-    db = loading_vectorstore()

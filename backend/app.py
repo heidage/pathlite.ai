@@ -1,9 +1,58 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from ingest import loading_vectorstore
+from dotenv import load_dotenv
+from langchain.prompts import (
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate
+)
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationChain
+from langchain.chat_models import AzureChatOpenAI
 
-from typing import Union
+import sys
+import os
 
 app = FastAPI()
+load_dotenv()
+db = loading_vectorstore()
+retriever = db.as_retriever(
+    search_type="similarity",  # Also test "similarity"
+    search_kwargs={"k": 3},
+)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+chat = AzureChatOpenAI(
+    headers = {"Ocp-Apim-Subscription-Key": os.environ["OPENAI_API_KEY"]},
+    # openai_api_base = os.environ["AZURE_OPENAI_ENDPOINT"],
+    openai_api_base = os.environ["OPENAI_API_BASE"],
+    openai_api_key = os.environ["OPENAI_API_KEY"],
+    deployment_name=os.environ["OPENAI_CHAT_DEPLOYMENT"],
+    openai_api_version=os.environ["OPENAI_CHAT_API_VERSION"],
+    max_tokens=os.environ["OPENAI_CHAT_RESPONSE_MAX_TOKENS"],
+    temperature=os.environ["OPENAI_CHAT_TEMPERATURE"],
+    verbose=True
+)
+
+# using Langchain conversationchain for chat method
+conversation = ConversationChain(
+    llm=chat,
+    verbose=True,
+)
+
+@app.post("/getDoc")
+async def generate(request: Request):
+    data = await request.json()
+    print(data)
+    # question = data["question"]
+    # docs = retriever.invoke(question)
+    # final_docs = ""
+    # for doc in docs:
+    #     doc.page_content = doc.page_content.replace("\n\n", " ")
+    #     final_docs += doc.metadata['source']+":\n"+doc.page_content+"\n\n"
+    # print(final_docs)
+    # return {"docs": final_docs}
+
+@app.post("/getResponse")
+async def askGPT(request: Request):
+    data = await request.json()
