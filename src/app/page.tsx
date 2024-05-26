@@ -1,3 +1,5 @@
+"use client"
+
 import ChatHistory from "@/components/ChatHistory";
 import ChatInput from "@/components/ChatInput";
 import { Provider } from "jotai";

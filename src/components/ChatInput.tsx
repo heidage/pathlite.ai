@@ -4,7 +4,7 @@ import React, {useState, useEffect} from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { addMessage,store,messagesAtom } from "@/store";
+import { addMessage } from "@/store";
 
 export default function ChatInput() {
     const [inputValue, setInputValue] = useState('');
@@ -13,8 +13,7 @@ export default function ChatInput() {
         if (inputValue.trim() === "") return;
         else {
             addMessage({message: inputValue, isUser: "user"});
-            console.log(store.get(messagesAtom));
-            setInputValue('');
+            setInputValue("");
         }
     }
     const handleEnterDown = (event: { key: string; }) => {
@@ -30,7 +29,7 @@ export default function ChatInput() {
                 placeholder="Ask pathlite.ai anything related to your document"
                 className="flex-grow h-14 pl-3 pr-10 rounded-2xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={(e) => setInputValue(e.target.value)  }
                 onKeyDown={handleEnterDown}
                 />
                 <div className="absolute right-0 top-0 h-full w-10 flex items-center justify-center rounded-r-lg">
