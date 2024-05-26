@@ -4,9 +4,12 @@ import React, {useState, useEffect} from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { messagesAtom } from "@/store";
+import { useAtom } from "jotai";
 
 export default function ChatInput() {
     const [inputValue, setInputValue] = useState('');
+    const [messages, setMessages] = useAtom(messagesAtom);
 
     const handleSendMessage = () => {
         if (inputValue.trim() === "") return;
