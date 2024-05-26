@@ -1,18 +1,22 @@
 "use client"
 
 import React, {useState, useEffect} from "react";
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { addMessage } from "@/store";
+import { addMessage, showMessages } from "@/store";
 
-export default function ChatInput() {
+interface ChatInputProps {
+    setHistory: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
+export default function ChatInput({ setHistory }: ChatInputProps) {
     const [inputValue, setInputValue] = useState('');
 
     const handleSendMessage = () => {
         if (inputValue.trim() === "") return;
         else {
             addMessage({message: inputValue, isUser: "user"});
+            setHistory(showMessages());
             setInputValue("");
         }
     }

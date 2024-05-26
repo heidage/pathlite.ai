@@ -10,3 +10,7 @@ export const messagesAtom = atom(INITIAL_MESSAGES);
 export const addMessage = (message: any) => {
     store.set(messagesAtom, (prev: any) => [...prev, message]);
 }
+
+export const showMessages = () => {
+    return store.get(messagesAtom)
+}
