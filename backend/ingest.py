@@ -12,9 +12,9 @@ from langchain_community.vectorstores import Chroma
 persist_directory = "db"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
-#Clone repo
-repo_path = "./repo"
-repo = Repo.clone_from("https://github.com/ethereum/ethereum-org-website.git", to_path=repo_path)
+# #Clone repo
+# repo_path = "./repo"
+# repo = Repo.clone_from("https://github.com/ethereum/ethereum-org-website.git", to_path=repo_path)
 
 def does_vectorstore_exist(persist_directory: str) -> bool:
     """
@@ -27,12 +27,12 @@ def does_vectorstore_exist(persist_directory: str) -> bool:
 #Load documents
 def process_documents():
     texts = []
-    root_dir = "./repo/etherium"
-    loader = GenericLoader.from_filesytem(
+    root_dir = "./repo/"
+    loader = GenericLoader.from_filesystem(
         root_dir,
         glob="**/*",
-        suffixes=[".js", ".ts", ".md",'.txt'],
-        parser= [LanguageParser(parser_threshold=500),TextParser()]
+        suffixes=[".js", ".ts", ".md"],
+        parser= LanguageParser(parser_threshold=500)
     )
     documents = loader.load()
     for doc in documents:
@@ -42,15 +42,15 @@ def process_documents():
             texts.extend(ts_splitter.split_documents([doc]))
         elif doc.metadata['source'][-2:] == "md":
             texts.extend(md_splitter.split_documents([doc]))
-        elif doc.metadata['source'][-2:] == "txt":
-            texts.extend(txt_splitter.create_documents([doc]))
+        # elif doc.metadata['source'][-2:] == "txt":
+        #     texts.extend(txt_splitter.create_documents([doc]))
     return texts
 
 #load vectorstore
 def loading_vectorstore():
     embedding = HuggingFaceEmbeddings(
         model_name = EMBEDDING_MODEL,
-        model_kwargs = {'device': 'cuda:0'},
+        model_kwargs = {'device': 'cpu'},
         encode_kwargs = {'normalize_embeddings': False}
     )
     if does_vectorstore_exist(persist_directory):
@@ -62,4 +62,5 @@ def loading_vectorstore():
         print("vectorstore created")
     return db
 
-texts = process_documents()
+if __name__ == "__main__":
+    db = loading_vectorstore()
