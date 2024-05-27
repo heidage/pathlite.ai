@@ -21,6 +21,7 @@ retriever = db.as_retriever(
     search_type="mmr",  # Also test "similarity"
     search_kwargs={"k": 3},
 )
+print("Retriever loaded")
 
 chat = AzureChatOpenAI(
     headers = {"Ocp-Apim-Subscription-Key": os.environ["OPENAI_API_KEY"]},

@@ -9,6 +9,17 @@ interface ChatInputProps {
     setHistory: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
+async function getResponse(message: string){
+    const response = await fetch('http://localhost:8000/getDoc',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({message})
+    })
+    const data = await response.json();
+    return data;
+}
 export default function ChatInput({ setHistory }: ChatInputProps) {
     const [inputValue, setInputValue] = useState('');
 
@@ -18,6 +29,10 @@ export default function ChatInput({ setHistory }: ChatInputProps) {
             addMessage({message: inputValue, isUser: true});
             setHistory(showMessages());
             setInputValue("");
+            getResponse(inputValue).then((data) => {
+                addMessage({message: data.message, isUser: false});
+                setHistory(showMessages());
+            })
         }
     }
     const handleEnterDown = (event: { key: string; }) => {
