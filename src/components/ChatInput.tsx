@@ -15,7 +15,7 @@ export default function ChatInput({ setHistory }: ChatInputProps) {
     const handleSendMessage = () => {
         if (inputValue.trim() === "") return;
         else {
-            addMessage({message: inputValue, isUser: "user"});
+            addMessage({message: inputValue, isUser: true});
             setHistory(showMessages());
             setInputValue("");
         }

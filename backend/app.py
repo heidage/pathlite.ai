@@ -18,7 +18,7 @@ app = FastAPI()
 load_dotenv()
 db = loading_vectorstore()
 retriever = db.as_retriever(
-    search_type="similarity",  # Also test "similarity"
+    search_type="mmr",  # Also test "similarity"
     search_kwargs={"k": 3},
 )
 

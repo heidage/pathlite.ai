@@ -14,11 +14,12 @@ type Message = {
     sources?: { name: string; link: string }[];
 };
 
-interface ChatHistoryProps {
-    history: Message[];
+type Props = {
+    history: Message[],
+    setHistory: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export default function ChatHistory({ history }: ChatHistoryProps) {
+export default function ChatHistory({history, setHistory}: Props) {
     return (
         <div className="overflow-y-auto flex-grow h-0">
             {history.length > 0 ? (
@@ -34,10 +35,12 @@ export default function ChatHistory({ history }: ChatHistoryProps) {
                         icon={
                             <FontAwesomeIcon icon={faWallet} className="text-lime-400" />
                         }
+                        setHistory={setHistory}
                         />
                         <DefaultCards
                         title="How are you able to help me with my query?"
                         icon={<FontAwesomeIcon icon={faQ} className="text-lime-400" />}
+                        setHistory={setHistory}
                         />
                     </div>
                 </div>

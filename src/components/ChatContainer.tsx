@@ -12,7 +12,7 @@ export default function ChatContainer() {
     const [history, setHistory] = useState<Message[]>([]);
     return (
         <>
-            <ChatHistory history={history}/>
+            <ChatHistory history={history} setHistory={setHistory}/>
             <ChatInput setHistory={setHistory}/>
         </>
     )
