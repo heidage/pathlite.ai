@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from ingest import loading_vectorstore
 from dotenv import load_dotenv
 from langchain.prompts import (
@@ -14,8 +15,21 @@ from langchain.chat_models import AzureChatOpenAI
 import sys
 import os
 
-app = FastAPI()
 load_dotenv()
+app = FastAPI()
+
+origins = [
+    "http://127.0.0.1:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 db = loading_vectorstore()
 retriever = db.as_retriever(
     search_type="mmr",  # Also test "similarity"
@@ -57,5 +71,6 @@ async def askGPT(request: Request):
     except:
         return {"error": "Invalid JSON"}
     
-    question = data.get("question")
+    question = data["question"]
     context = getDocs(question)
+    return {"answer":context}
