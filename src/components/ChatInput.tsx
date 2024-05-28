@@ -9,16 +9,26 @@ interface ChatInputProps {
     setHistory: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
+// get Response from chatgpt
 async function getResponse(message: string){
-    const response = await fetch('http://127.0.0.1:8000/getDoc',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"question":message})
-    })
-    const data = await response.json();
-    return data;
+    try{
+        const response = await fetch('http://127.0.0.1:8000/getResponse',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"question":message})
+        })
+        if (!response.ok){
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json();
+        console.log(data);
+        return "";
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 export default function ChatInput({ setHistory }: ChatInputProps) {
     const [inputValue, setInputValue] = useState('');
@@ -30,7 +40,7 @@ export default function ChatInput({ setHistory }: ChatInputProps) {
             setHistory(showMessages());
             setInputValue("");
             getResponse(inputValue).then((data) => {
-                addMessage({message: data.message, isUser: false});
+                addMessage({message: data, isUser: false});
                 setHistory(showMessages());
             })
         }
