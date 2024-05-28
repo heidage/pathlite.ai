@@ -41,19 +41,21 @@ conversation = ConversationChain(
     verbose=True,
 )
 
-@app.post("/getDoc")
-async def generate(request: Request):
-    data = await request.json()
-    print(data)
-    # question = data["question"]
-    # docs = retriever.invoke(question)
-    # final_docs = ""
-    # for doc in docs:
-    #     doc.page_content = doc.page_content.replace("\n\n", " ")
-    #     final_docs += doc.metadata['source']+":\n"+doc.page_content+"\n\n"
-    # print(final_docs)
-    # return {"docs": final_docs}
+def getDocs(question):
+    docs = retriever.invoke(question)
+    final_docs = ""
+    for doc in docs:
+        doc.page_content = doc.page_content.replace("\n\n", " ")
+        final_docs += doc.metadata['source']+":\n"+doc.page_content+"\n\n"
+
+    return final_docs
 
 @app.post("/getResponse")
 async def askGPT(request: Request):
-    data = await request.json()
+    try:
+        data = await request.json()
+    except:
+        return {"error": "Invalid JSON"}
+    
+    question = data.get("question")
+    context = getDocs(question)

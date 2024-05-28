@@ -10,12 +10,12 @@ interface ChatInputProps {
 }
 
 async function getResponse(message: string){
-    const response = await fetch('http://localhost:8000/getDoc',{
+    const response = await fetch('http://127.0.0.1:8000/getDoc',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({message})
+        body: JSON.stringify({"question":message})
     })
     const data = await response.json();
     return data;
