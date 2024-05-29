@@ -15,11 +15,14 @@ from langchain.chat_models import AzureChatOpenAI
 import sys
 import os
 
+import prompts
+
 load_dotenv()
 app = FastAPI()
 
 origins = [
-    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -64,6 +67,30 @@ def getDocs(question):
 
     return final_docs
 
+def getAnswerfromGPT(question, context):
+    # memory = ConversationBufferMemory(
+    #     k =os.environ['OPENAI_CHAT_MEMORY_WINDOW'],
+    #     chat_memory=message_history #redis cache
+    #     return_messages=True,
+    #     memory_key="history"
+    # )
+    # conversation.memory = memory
+    random_delimiters = prompts.generate_random_delimiters(3)
+    system_prompt = prompts.CHAT_SYSTEMPROMPT.format(
+        organization="pathlite.ai",
+        delimiters=random_delimiters,
+        number_of_words=os.environ("OPENAI_CHAT_RESPONSE_MAX_TOKENS"),
+        sources=context
+    )
+    chatprompt = ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template(system_prompt),
+        HumanMessagePromptTemplate.from_template(prompts.HUMANPROMPT)
+    ])
+
+    conversation.prompt = chatprompt
+    response = conversation.predict(input=question)
+    return response
+
 @app.post("/getResponse")
 async def askGPT(request: Request):
     try:
@@ -73,4 +100,5 @@ async def askGPT(request: Request):
     
     question = data["question"]
     context = getDocs(question)
-    return {"answer":context}
+    response = getAnswerfromGPT(question, context)
+    return {"answer": response}
