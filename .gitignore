@@ -39,4 +39,4 @@ next-env.d.ts
 /backend/.env
 /backend/repo
 /backend/myenv
-/backend/_pycache_
+/backend/__pycache__
