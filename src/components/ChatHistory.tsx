@@ -6,7 +6,6 @@ import DefaultCards from "./DefaultCards";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import { faQ } from "@fortawesome/free-solid-svg-icons";
-import { showMessages } from "@/store";
 
 type Message = {
     message: string;
@@ -21,7 +20,7 @@ type Props = {
 
 export default function ChatHistory({history, setHistory}: Props) {
     return (
-        <div className="overflow-y-auto flex-grow h-0">
+        <div className="scrollbar-custom flex-grow h-0">
             {history.length > 0 ? (
                 <Conversation messages={history} />
             ) : (

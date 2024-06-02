@@ -29,7 +29,7 @@ export default function Message({message, isUser, sources}: Props) {
             }
         </div>
         <div className="flex-grow">
-            <div className="text-white">
+            <div className="text-white" style={{ whiteSpace: 'pre-wrap' }}>
                 {message}
             </div>
             {sources && sources.length > 0 && (
