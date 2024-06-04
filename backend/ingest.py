@@ -61,3 +61,15 @@ def loading_vectorstore():
         db = Chroma.from_documents(texts, embedding,persist_directory=persist_directory)
         print("vectorstore created")
     return db
+
+# if __name__ == "__main__":
+#     db = loading_vectorstore()
+#     retriever = db.as_retriever(
+#         search_type="mmr",
+#         search_kwargs={"k": 3}
+#     )
+#     docs = retriever.invoke("How do I create a wallet?")
+#     for doc in docs:
+#         print(doc.metadata['source'])
+#         print(doc.page_content)
+#         print("\n\n")
