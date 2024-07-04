@@ -54,11 +54,13 @@ def loading_vectorstore():
         encode_kwargs = {'normalize_embeddings': False}
     )
     if does_vectorstore_exist(persist_directory):
-        db = Chroma(persist_directory=persist_directory,embedding_function=embedding)
+        print("loading existing vectorstore")
+        db = Chroma(collection_name="ethereum",persist_directory=persist_directory,embedding_function=embedding)
     else:
         print("creating new vectorstore")
         texts = process_documents()
-        db = Chroma.from_documents(texts, embedding,persist_directory=persist_directory)
+        print("documents processed")
+        db = Chroma.from_documents(texts, embedding,persist_directory=persist_directory,collection_name="ethereum")
         print("vectorstore created")
     return db
 

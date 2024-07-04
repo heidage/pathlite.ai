@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from ingest import loading_vectorstore
 from dotenv import load_dotenv
-import prompts
+import Prompts as prompts
 
 load_dotenv()
 endpoint = os.environ["AZURE_OPENAI_ENDPOINT"]
