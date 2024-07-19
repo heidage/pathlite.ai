@@ -12,17 +12,26 @@ interface ChatInputProps {
 
 export default function ChatInput({ setHistory }: ChatInputProps) {
     const [inputValue, setInputValue] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSendMessage = () => {
+    const handleSendMessage =  async () => {
         if (inputValue.trim() === "") return;
         else {
             addMessage({message: inputValue, isUser: true});
             setHistory(showMessages());
             setInputValue("");
-            getResponse(inputValue).then((data) => {
+            setIsLoading(true);
+            try {
+                const data = await getResponse(inputValue);
                 addMessage({message: data, isUser: false});
                 setHistory(showMessages());
-            })
+            } catch (error) {
+                console.error("Error getting response:", error);
+                addMessage({message: "Error in getting response", isUser: false});
+                setHistory(showMessages());
+            } finally {
+                setIsLoading(false);
+            }
         }
     }
     
@@ -41,13 +50,24 @@ export default function ChatInput({ setHistory }: ChatInputProps) {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)  }
                 onKeyDown={handleEnterDown}
+                disabled={isLoading}
                 />
                 <div className="absolute right-0 top-0 h-full w-10 flex items-center justify-center rounded-r-lg">
-                    <button className="w-4 h-4 flex items-center justify-center" onClick={handleSendMessage}>
-                        <FontAwesomeIcon icon={faPaperPlane} className="text-white" />
+                    <button 
+                        className="w-4 h-4 flex items-center justify-center" 
+                        onClick={handleSendMessage}
+                        disabled={isLoading}
+                    >
+                        <FontAwesomeIcon icon={faPaperPlane} className={`text-white ${isLoading ? 'opacity-50' : ''}`} />
                     </button>
                 </div>
             </div>
+            {isLoading && (
+                <div className="ml-2 text-white flex items-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                    Loading...
+                </div>
+            )}
         </div>
     );
 }

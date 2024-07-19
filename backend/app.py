@@ -38,7 +38,7 @@ LLM_CONFIG = {
 
 assistant = RetrieveAssistantAgent(
     name="assistant",
-    system_message="You are a helpful assistant",
+    system_message=RETRIEVE_ASSISTANT_SYSTEMPROMPT,
     llm_config = LLM_CONFIG,
 )
 
@@ -54,7 +54,7 @@ azure_proxy = RetrieveUserProxyAgent(
         "chunk_token_size": 2000,
         "custom_text_types": ["md", "js", "ts","md","txt"],
         "overwrite": False,
-        "customized_prompt": CHAT_SYSTEMPROMPT,
+        "customized_prompt": RETRIEVE_USER_SYSTEMPROMPT,
         "model": "gpt-35-turbo",
     }
 )
