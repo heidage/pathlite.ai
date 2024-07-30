@@ -8,7 +8,7 @@ type Message = {
 };
 
 type Props = {
-    messages: Message[];
+    messages: Message[],
 }
 
 export default function Conversation({messages}: Props){

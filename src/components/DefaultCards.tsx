@@ -6,8 +6,9 @@ type Props = {
     icon: React.ReactNode;
     title: string;
     setHistory: React.Dispatch<React.SetStateAction<any[]>>;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default function DefaultCards({icon, title, setHistory}: Props) {
+export default function DefaultCards({icon, title, setHistory, setLoading}: Props) {
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
         addMessage({message: title, isUser: true});
         setHistory(showMessages());

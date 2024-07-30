@@ -10,10 +10,12 @@ type Message = {
 
 export default function ChatContainer() {
     const [history, setHistory] = useState<Message[]>([]);
+    const [isLoading, setLoading] = useState<boolean>(false);
+
     return (
         <>
-            <ChatHistory history={history} setHistory={setHistory}/>
-            <ChatInput setHistory={setHistory}/>
+            <ChatHistory history={history} setHistory={setHistory} setLoading={setLoading}/>
+            <ChatInput setHistory={setHistory} isLoading={isLoading}/>
         </>
     )
 }

@@ -7,12 +7,13 @@ import { addMessage, showMessages } from "@/store";
 import getResponse from "../api/getResponse";
 
 interface ChatInputProps {
-    setHistory: React.Dispatch<React.SetStateAction<any[]>>;
+    setHistory: React.Dispatch<React.SetStateAction<any[]>>,
+    isLoading?: boolean;
 }
 
-export default function ChatInput({ setHistory }: ChatInputProps) {
+export default function ChatInput({ setHistory, isLoading }: ChatInputProps) {
     const [inputValue, setInputValue] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingInput, setIsLoading] = useState(isLoading);
 
     const handleSendMessage =  async () => {
         if (inputValue.trim() === "") return;
@@ -50,19 +51,19 @@ export default function ChatInput({ setHistory }: ChatInputProps) {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)  }
                 onKeyDown={handleEnterDown}
-                disabled={isLoading}
+                disabled={isLoadingInput}
                 />
                 <div className="absolute right-0 top-0 h-full w-10 flex items-center justify-center rounded-r-lg">
                     <button 
                         className="w-4 h-4 flex items-center justify-center" 
                         onClick={handleSendMessage}
-                        disabled={isLoading}
+                        disabled={isLoadingInput}
                     >
                         <FontAwesomeIcon icon={faPaperPlane} className={`text-white ${isLoading ? 'opacity-50' : ''}`} />
                     </button>
                 </div>
             </div>
-            {isLoading && (
+            {isLoadingInput && (
                 <div className="ml-2 text-white flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
                     Loading...

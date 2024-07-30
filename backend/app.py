@@ -13,8 +13,6 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from Prompts import *
-
 load_dotenv()
 CHAT_MEMORY_WINDOW = int(os.environ.get("OPENAI_CHAT_MEMORY_WINDOW", "4"))
 CHAT_BASE_URL = os.environ["AZURE_OPENAI_ENDPOINT"]
@@ -38,7 +36,7 @@ LLM_CONFIG = {
 
 assistant = RetrieveAssistantAgent(
     name="assistant",
-    system_message=RETRIEVE_ASSISTANT_SYSTEMPROMPT,
+    system_message="You are a helpful AI assistant",
     llm_config = LLM_CONFIG,
 )
 
@@ -54,7 +52,6 @@ azure_proxy = RetrieveUserProxyAgent(
         "chunk_token_size": 2000,
         "custom_text_types": ["md", "js", "ts","md","txt"],
         "overwrite": False,
-        "customized_prompt": RETRIEVE_USER_SYSTEMPROMPT,
         "model": "gpt-35-turbo",
     }
 )

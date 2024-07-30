@@ -6,7 +6,7 @@ import React from "react";
 type Props = {
     message: string;
     isUser: boolean;
-    sources?: { name: string; link: string }[];
+    sources?: { name: string; link: string }[],
 };
 
 export default function Message({message, isUser, sources}: Props) {

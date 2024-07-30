@@ -15,14 +15,15 @@ type Message = {
 
 type Props = {
     history: Message[],
-    setHistory: React.Dispatch<React.SetStateAction<any[]>>;
+    setHistory: React.Dispatch<React.SetStateAction<any[]>>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function ChatHistory({history, setHistory}: Props) {
+export default function ChatHistory({history, setHistory, setLoading}: Props) {
     return (
         <div className="scrollbar-custom flex-grow h-0">
             {history.length > 0 ? (
-                <Conversation messages={history} />
+                <Conversation messages={history}/>
             ) : (
                 <div className="flex flex-col items-center justify-center h-full">
                     <div className="mb-6 text-center">
@@ -35,11 +36,13 @@ export default function ChatHistory({history, setHistory}: Props) {
                             <FontAwesomeIcon icon={faWallet} className="text-lime-400" />
                         }
                         setHistory={setHistory}
+                        setLoading={setLoading}
                         />
                         <DefaultCards
                         title="How are you able to help me with my query?"
                         icon={<FontAwesomeIcon icon={faQ} className="text-lime-400" />}
                         setHistory={setHistory}
+                        setLoading={setLoading}
                         />
                     </div>
                 </div>
