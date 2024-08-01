@@ -24,7 +24,7 @@ export default function ChatInput({ setHistory, isLoading }: ChatInputProps) {
             setIsLoading(true);
             try {
                 const data = await getResponse(inputValue);
-                addMessage({message: data, isUser: false});
+                addMessage({message: data.answer, isUser: false, sources: data.sources});
                 setHistory(showMessages());
             } catch (error) {
                 console.error("Error getting response:", error);

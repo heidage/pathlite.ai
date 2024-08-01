@@ -1,4 +1,5 @@
 import os
+import re
 import string
 import random
 import json
@@ -12,6 +13,7 @@ from autogen.agentchat.contrib.retrieve_assistant_agent import RetrieveAssistant
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from Prompts import RETRIEVE_USER_SYSTEMPROMPT
 
 load_dotenv()
 CHAT_MEMORY_WINDOW = int(os.environ.get("OPENAI_CHAT_MEMORY_WINDOW", "4"))
@@ -31,7 +33,6 @@ LLM_CONFIG = {
         }
     ],
     "temperature": CHAT_TEMPERATURE,
-    "max_tokens": 200,
 }
 
 assistant = RetrieveAssistantAgent(
@@ -82,4 +83,12 @@ async def askGPT(request: Request):
     assistant.reset()
     with Cache.redis(redis_url="redis://localhost:6379/0") as cache:
         result = azure_proxy.initiate_chat(assistant, message=azure_proxy.message_generator, problem=question, cache=cache)
-        return {"answer": result.summary}
+        final_result = result.summary
+        answer, sources = final_result.split("Sources: ")
+        sources_list = sources.split(", ")
+        if type(sources_list) is not list:
+            sources_list = [sources]
+        
+        pattern = r'\[(.*?)\]\((.*?)\)'
+        sources_list = [{"name": match[0], "link": match[1]} for source in sources_list for match in re.findall(pattern, source)]
+        return {"answer": answer, "sources": sources_list}

@@ -17,7 +17,7 @@ export default function DefaultCards({icon, title, setHistory, setLoading}: Prop
     const handleDefaultCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
         handleClick(event);
         getResponse(title).then((data)=>{
-            addMessage({message: data, isUser: false});
+            addMessage({message: data.answer, isUser: false, sources: data.sources});
             setHistory(showMessages());
         })
     }

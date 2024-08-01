@@ -12,7 +12,7 @@ export default async function getResponse(message: string){
             throw new Error(`HTTP error! status: ${response.status}`)
         }
         const data = await response.json();
-        return data.answer;
+        return data;
     } catch (error) {
         console.error(error);
         return "Error in getting reponse";

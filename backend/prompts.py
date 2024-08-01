@@ -23,6 +23,8 @@ User's question is: {input_question}
 
 Context is: {input_context}
 
+The source of the context is: {input_sources}
+
 If you can answer the question, in the end of your answer, add the source of the context in the format of `Sources: source1, source2, ...`.
 """
 

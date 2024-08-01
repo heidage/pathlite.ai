@@ -35,10 +35,22 @@ export default function Message({message, isUser, sources}: Props) {
             {sources && sources.length > 0 && (
                 <div className="mt-2">
                     <div className="text-gray-400 text-sm">Sources:</div>
-                    <ul className="mt-1 space-y-1">
-                        {sources.map((source, index)=>(
-                            <li key={index}>
-                                <a href={source.link} className="text-blue-400 hover:underline">{source.name}</a>
+                    <ul className="mt-1 flex flex-wrap gap-2">
+                        {sources.map((source, index) => (
+                            <li key={index} className="flex-shrink-0">
+                                <div className="bg-gray-800 rounded-lg p-2 shadow-md hover:shadow-lg transition-shadow duration-300 w-full sm:w-auto sm:max-w-[200px]">
+                                    <a
+                                        href={source.link}
+                                        className="text-blue-400 hover:text-blue-300 font-medium block text-sm"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {source.name}
+                                    </a>
+                                    <p className="text-gray-400 text-xs mt-1 truncate">
+                                        {source.link}
+                                    </p>
+                                </div>
                             </li>
                         ))}
                     </ul>
