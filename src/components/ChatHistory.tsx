@@ -10,7 +10,7 @@ import { faQ } from "@fortawesome/free-solid-svg-icons";
 type Message = {
     message: string;
     isUser: boolean;
-    sources?: { name: string; link: string }[];
+    sources?: { name: string; link: string; website: boolean }[];
 };
 
 type Props = {
