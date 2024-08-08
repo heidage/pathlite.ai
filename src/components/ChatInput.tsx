@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { addMessage, showMessages } from "@/store";
 import getResponse from "../api/getResponse";
+import { addMessageToDB } from "../../db/db.model";
 
 interface ChatInputProps {
     setHistory: React.Dispatch<React.SetStateAction<any[]>>,
@@ -19,12 +20,14 @@ export default function ChatInput({ setHistory, isLoading }: ChatInputProps) {
         if (inputValue.trim() === "") return;
         else {
             addMessage({message: inputValue, isUser: true});
+            addMessageToDB({message: inputValue, isUser: true});
             setHistory(showMessages());
             setInputValue("");
             setIsLoading(true);
             try {
                 const data = await getResponse(inputValue);
                 addMessage({message: data.answer, isUser: false, sources: data.sources});
+                addMessageToDB({message: data.answer, isUser: false, sources: data.sources});
                 setHistory(showMessages());
             } catch (error) {
                 console.error("Error getting response:", error);

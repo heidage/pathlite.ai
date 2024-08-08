@@ -91,4 +91,6 @@ async def askGPT(request: Request):
         
         pattern = r'\[(.*?)\]\((.*?)\)'
         sources_list = [{"name": match[0], "link": match[1]} for source in sources_list for match in re.findall(pattern, source)]
+        
+        # need to add in funcitonality for showing the sources if links are from files
         return {"answer": answer, "sources": sources_list}
