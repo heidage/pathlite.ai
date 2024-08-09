@@ -10,7 +10,7 @@ from autogen import Cache
 from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
 from autogen.agentchat.contrib.retrieve_assistant_agent import RetrieveAssistantAgent
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from Prompts import RETRIEVE_USER_SYSTEMPROMPT
@@ -94,9 +94,17 @@ async def askGPT(request: Request):
             sources_list = [{"name": match[0], "link": match[1], "website": True} for source in sources_list for match in re.findall(pattern, source)]
         else:
             sources_list = list(set(sources_list))[:3]
-            sources_list = [{"name": source, "link": source, "website": False} for source in sources_list]
+            sources_list = [{"name": source.split('\\\\')[-2], "link": source, "website": False} for source in sources_list]
         return {"answer": answer, "sources": sources_list}
     
-@app.get("/getSources")
-async def getSources(request: Request):
-    pass
+@app.get("/api/file-content")
+async def get_file_content(file_path: str):
+    # Ensure the requested file is within the allowed directory
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+        return {"content": content}
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="File not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

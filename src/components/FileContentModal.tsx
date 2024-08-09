@@ -2,12 +2,12 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-type FileContentModelProps = {
+type FileContentModalProps = {
     source: { name: string; content: string };
     onClose: () => void;
 }
 
-export default function FileContentModel({ source, onClose }: FileContentModelProps) {
+export default function FileContentModal({ source, onClose }: FileContentModalProps) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>

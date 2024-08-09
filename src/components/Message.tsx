@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import React from "react";
+import React, {useState} from "react";
+import FileContentModal from "./FileContentModal";
 
 type Props = {
     message: string;
@@ -10,6 +11,14 @@ type Props = {
 };
 
 export default function Message({message, isUser, sources}: Props) {
+    const [selectedSource, setSelectedSource] = useState<{ name: string; content: string } | null>(null);
+
+    const fetchFileContent = async (link: string) => {
+        const response = await fetch(`/api/file-content?path=${encodeURIComponent(link)}`);
+        const content = await response.text();
+        return content
+    }
+
     return (
     <div className="border-b border-gray-700 w-11/12 mx-auto p-4 flex gap-3">
         <div className="flex-shrink-0">
@@ -39,14 +48,26 @@ export default function Message({message, isUser, sources}: Props) {
                         {sources.map((source, index) => (
                             <li key={index} className="flex-shrink-0">
                                 <div className="bg-gray-800 rounded-lg p-2 shadow-md hover:shadow-lg transition-shadow duration-300 w-full sm:w-auto sm:max-w-[200px]">
-                                    <a
-                                        href={source.link}
-                                        className="text-blue-400 hover:text-blue-300 font-medium block text-sm"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {source.name}
-                                    </a>
+                                    {source.website? (
+                                        <a
+                                            href={source.link}
+                                            className="text-blue-400 hover:text-blue-300 font-medium block text-sm"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {source.name}
+                                        </a>
+                                    ) : (
+                                        <button
+                                            onClick={async () => {
+                                                const content = await fetchFileContent(source.link);
+                                                setSelectedSource({ name: source.name, content });
+                                            }}
+                                            className="text-blue-400 hover:text-blue-300 font-medium block text-sm"
+                                        >
+                                            {source.name}
+                                        </button>
+                                    )}
                                     <p className="text-gray-400 text-xs mt-1 truncate">
                                         {source.link}
                                     </p>
@@ -57,5 +78,12 @@ export default function Message({message, isUser, sources}: Props) {
                 </div>
             )}
         </div>
-    </div>)
+        {selectedSource && (
+            <FileContentModal
+                source={selectedSource}
+                onClose={() => setSelectedSource(null)}
+            />
+        )}
+    </div>
+    );
 }
