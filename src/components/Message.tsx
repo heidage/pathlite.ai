@@ -12,6 +12,7 @@ type Props = {
 
 export default function Message({message, isUser, sources}: Props) {
     const [selectedSource, setSelectedSource] = useState<{ name: string; content: string } | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const fetchFileContent = async (link: string) => {
         const response = await fetch(`/api/file-content?path=${encodeURIComponent(link)}`);
@@ -62,6 +63,7 @@ export default function Message({message, isUser, sources}: Props) {
                                             onClick={async () => {
                                                 const content = await fetchFileContent(source.link);
                                                 setSelectedSource({ name: source.name, content });
+                                                setIsModalOpen(true);
                                             }}
                                             className="text-blue-400 hover:text-blue-300 font-medium block text-sm"
                                         >
@@ -81,7 +83,10 @@ export default function Message({message, isUser, sources}: Props) {
         {selectedSource && (
             <FileContentModal
                 source={selectedSource}
-                onClose={() => setSelectedSource(null)}
+                onClose={() => {
+                    setSelectedSource(null);
+                    setIsModalOpen(false);
+                }}
             />
         )}
     </div>
