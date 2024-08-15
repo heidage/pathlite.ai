@@ -101,6 +101,8 @@ async def askGPT(request: Request):
 async def get_file_content(file_path: str):
     # Ensure the requested file is within the allowed directory
     try:
+        file_path = os.path.join(os.path.dirname(__file__), file_path)
+        print(file_path)
         with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
         return {"content": content}

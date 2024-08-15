@@ -11,13 +11,17 @@ type Props = {
 };
 
 export default function Message({message, isUser, sources}: Props) {
-    const [selectedSource, setSelectedSource] = useState<{ name: string; content: string } | null>(null);
+    const [selectedSource, setSelectedSource] = useState<{ name: string; content: string; file: string } | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const fetchFileContent = async (link: string) => {
-        const response = await fetch(`/api/file-content?path=${encodeURIComponent(link)}`);
-        const content = await response.text();
-        return content
+        const cleanPath = link.replace(/^'|'$/g, '').replace(/\\/g, '/').replace(/\/+/g, '/');
+        const response = await fetch(`http://127.0.0.1:8000/api/file-content?file_path=${encodeURIComponent(cleanPath)}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch file content');
+        }
+        const data = await response.json();
+        return data.content;
     }
 
     return (
@@ -62,7 +66,7 @@ export default function Message({message, isUser, sources}: Props) {
                                         <button
                                             onClick={async () => {
                                                 const content = await fetchFileContent(source.link);
-                                                setSelectedSource({ name: source.name, content });
+                                                setSelectedSource({ name: source.name, content, file: source.link });
                                                 setIsModalOpen(true);
                                             }}
                                             className="text-blue-400 hover:text-blue-300 font-medium block text-sm"
@@ -80,7 +84,7 @@ export default function Message({message, isUser, sources}: Props) {
                 </div>
             )}
         </div>
-        {selectedSource && (
+        {isModalOpen && selectedSource && (
             <FileContentModal
                 source={selectedSource}
                 onClose={() => {

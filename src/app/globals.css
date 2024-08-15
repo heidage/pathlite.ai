@@ -95,3 +95,31 @@ main {
 .-translate-y-1 {
   transform: translateY(-25%);
 }
+
+.markdown-content h1 {
+  @apply text-2xl font-bold mb-4 text-white;
+}
+
+.markdown-content h2 {
+  @apply text-xl font-semibold mb-3 text-white;
+}
+
+.markdown-content p {
+  @apply mb-4 text-gray-300;
+}
+
+.markdown-content ul, .markdown-content ol {
+  @apply list-disc list-inside mb-4 text-gray-300;
+}
+
+.markdown-content li {
+  @apply mb-2;
+}
+
+.markdown-content a {
+  @apply text-blue-400 hover:underline;
+}
+
+.markdown-content code {
+  @apply bg-gray-700 rounded px-1 py-0.5 text-sm;
+}
