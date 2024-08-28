@@ -84,18 +84,21 @@ async def askGPT(request: Request):
     with Cache.redis(redis_url="redis://localhost:6379/0") as cache:
         result = azure_proxy.initiate_chat(assistant, message=azure_proxy.message_generator, problem=question, cache=cache)
         final_result = result.summary
-        answer, sources = final_result.split("Sources: ")
-        sources_list = sources.split(", ")
-        if type(sources_list) is not list:
-            sources_list = [sources]
         
-        pattern = r'\[(.*?)\]\((.*?)\)'
-        if len(re.findall(pattern, sources)) > 0:
-            sources_list = [{"name": match[0], "link": match[1], "website": True} for source in sources_list for match in re.findall(pattern, source)]
-        else:
-            sources_list = list(set(sources_list))[:3]
-            sources_list = [{"name": source.split('\\\\')[-2], "link": source, "website": False} for source in sources_list]
-        return {"answer": answer, "sources": sources_list}
+        if "Sources: " in final_result:
+            answer, sources = final_result.split("Sources: ")
+            sources_list = sources.split(", ")
+            if type(sources_list) is not list:
+                sources_list = [sources]
+            
+            pattern = r'\[(.*?)\]\((.*?)\)'
+            if len(re.findall(pattern, sources)) > 0:
+                sources_list = [{"name": match[0], "link": match[1], "website": True} for source in sources_list for match in re.findall(pattern, source)]
+            else:
+                sources_list = list(set(sources_list))[:3]
+                sources_list = [{"name": source.split('\\\\')[-2], "link": source, "website": False} for source in sources_list]
+            return {"answer": answer, "sources": sources_list}
+        return {"answer": final_result, "sources": []}
     
 @app.get("/api/file-content")
 async def get_file_content(file_path: str):
