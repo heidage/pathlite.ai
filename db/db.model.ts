@@ -3,7 +3,7 @@ import Dexie, { Table} from 'dexie'
 export interface Message {
     message: string;
     isUser: boolean;
-    sources?: { name: string; link: string }[];
+    sources?: { name: string; link: string; website: boolean }[];
 }
 
 export class DB extends Dexie{
