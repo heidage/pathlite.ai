@@ -30,6 +30,7 @@ LLM_CONFIG = {
             "api_key": os.environ['AZURE_OPENAI_API_KEY'],
             "base_url": CHAT_BASE_URL,
             "api_version": CHAT_API_VERSION,
+            "max_tokens": 300,
         }
     ],
     "temperature": CHAT_TEMPERATURE,
